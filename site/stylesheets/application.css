@@ -1,6 +1,19 @@
 
+table#hanafuda {
+    border-spacing: 0;
+}
+
+table#hanafuda td {
+    padding: 4px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: gray;
+}
+
 /* default size: 512x839 */
-.card {
+table#hanafuda img.card {
     width: 60px;
+    float: left;
+    margin: 4px;
 }
 

@@ -308,12 +308,18 @@ $hanafuda.model = (($) => {
         return map
     }, {})
 
-    $.monthToPointToCards = $.cards.reduce((map, card) => {
-        map[card.month] ||= {}
-        map[card.month][card.point] ||= []
-        map[card.month][card.point].push(card)
+    $.monthToPointToCards = (map => {
+        $range.closed(1, 12).forEach(month => {
+            [20, 10, 5, 1].forEach(point => {
+                map[month] ||= {}
+                map[month][point] ||= []
+            })
+        })
+        $.cards.forEach(card => {
+            map[card.month][card.point].push(card)
+        })
         return map
-    }, {})
+    })({})
 
     return $
 
@@ -343,22 +349,26 @@ $hanafuda.view = (($) => {
 
         function initializeMonthElement(tbodyElement, month) {
             const monthElement = tbodyElement.querySelector(".month")
-            let monthText = monthElement.innerText
-            monthText = monthText.replaceAll("${month}", month)
-            monthElement.innerText = monthText
+            monthElement.innerText = "" + month + "月"
         }
 
         function initializeCardElements(tbodyElement, month) {
             const cards = $hanafuda.model.monthToCards[month]
-            const cardElements = tbodyElement.querySelectorAll(".card")
-            for (let i = 0; i < 4; i++) {
-                initializeCardElement(cardElements[i], cards[i])
-            }
+            cards.forEach(card => {
+                const pointElement = tbodyElement.querySelector(".point-" + card.point)
+                const cardElement = createCardElement(card)
+                pointElement.appendChild(cardElement)
+            })
         }
 
-        function initializeCardElement(cardElement, card) {
+        function createCardElement(card) {
+            const cardElement = document.createElement("img")
             const imageFileUrl = "./images/" + card.image
             cardElement.setAttribute("src", imageFileUrl)
+            cardElement.setAttribute("alt", card.name)
+            cardElement.setAttribute("title", card.name)
+            cardElement.setAttribute("class", "card")
+            return cardElement
         }
 
         initialize()

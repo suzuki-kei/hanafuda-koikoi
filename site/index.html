@@ -7,23 +7,37 @@
     </head>
     <body>
         <table id="hanafuda">
+            <thead>
+                <tr>
+                    <td>
+                        月
+                    </td>
+                    <td>
+                        光: 20点
+                    </td>
+                    <td>
+                        種: 10点
+                    </td>
+                    <td>
+                        短冊: 5点
+                    </td>
+                    <td>
+                        カス: 1点
+                    </td>
+                </tr>
+            </thead>
             <template id="hanafuda-template">
                 <tbody>
                     <tr>
-                        <td>
-                            <span class="month">${month}月</span>
+                        <td class="month">
                         </td>
-                        <td>
-                            <img src="${card-image-url-01}" class="card" />
+                        <td class="point-20">
                         </td>
-                        <td>
-                            <img src="${card-image-url-02}" class="card" />
+                        <td class="point-10">
                         </td>
-                        <td>
-                            <img src="${card-image-url-03}" class="card" />
+                        <td class="point-5">
                         </td>
-                        <td>
-                            <img src="${card-image-url-04}" class="card" />
+                        <td class="point-1">
                         </td>
                     </tr>
                 </tbody>
