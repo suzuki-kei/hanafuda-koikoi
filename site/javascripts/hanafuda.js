@@ -350,6 +350,74 @@ $hanafuda.model = ($ => {
         },
     ]
 
+    $.plants = [
+        {
+            month: 1,
+            name: "松",
+            pronounce: "まつ",
+        },
+        {
+            month: 2,
+            name: "梅",
+            pronounce: "うめ",
+        },
+        {
+            month: 3,
+            name: "桜",
+            pronounce: "さくら",
+        },
+        {
+            month: 4,
+            name: "藤",
+            pronounce: "ふじ",
+        },
+        {
+            month: 5,
+            name: "菖蒲",
+            pronounce: "あやめ",
+        },
+        {
+            month: 6,
+            name: "牡丹",
+            pronounce: "ぼたん",
+        },
+        {
+            month: 7,
+            name: "萩",
+            pronounce: "はぎ",
+        },
+        {
+            month: 8,
+            name: "芒",
+            pronounce: "すすき",
+        },
+        {
+            month: 9,
+            name: "菊",
+            pronounce: "きく",
+        },
+        {
+            month: 10,
+            name: "紅葉",
+            pronounce: "もみじ",
+        },
+        {
+            month: 11,
+            name: "柳",
+            pronounce: "やなぎ",
+        },
+        {
+            month: 12,
+            name: "桐",
+            pronounce: "きり",
+        },
+    ]
+
+    $.monthToPlants = $.plants.reduce((map, plant) => {
+        map[plant.month] = plant
+        return map
+    }, {})
+
     $.monthToCards = $.cards.reduce((map, card) => {
         map[card.month] ||= []
         map[card.month].push(card)
@@ -391,6 +459,7 @@ $hanafuda.view = ($ => {
         function createTbodyElement(month) {
             const tbodyElement = createElementFromTemplateId("hanafuda-template")
             initializeMonthElement(tbodyElement, month)
+            initializePlantElement(tbodyElement, month)
             initializeCardElements(tbodyElement, month)
             return tbodyElement
         }
@@ -398,6 +467,12 @@ $hanafuda.view = ($ => {
         function initializeMonthElement(tbodyElement, month) {
             const monthElement = tbodyElement.querySelector(".month")
             monthElement.innerText = "" + month + "月"
+        }
+
+        function initializePlantElement(tbodyElement, month) {
+            const plant = $hanafuda.model.monthToPlants[month]
+            const plantElement = tbodyElement.querySelector(".plant")
+            plantElement.innerText = plant.name + " (" + plant.pronounce + ")"
         }
 
         function initializeCardElements(tbodyElement, month) {
