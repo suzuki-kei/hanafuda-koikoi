@@ -1,5 +1,5 @@
 
-const $hanafuda = (($) => {
+const $hanafuda = ($ => {
 
     $.initialize = () => {
         $.view.initialize()
@@ -9,7 +9,7 @@ const $hanafuda = (($) => {
 
 })({})
 
-$hanafuda.model = (($) => {
+$hanafuda.model = ($ => {
 
     $.cards = [
         {
@@ -325,7 +325,7 @@ $hanafuda.model = (($) => {
 
 })({})
 
-$hanafuda.view = (($) => {
+$hanafuda.view = ($ => {
 
     $.initialize = () => {
 
