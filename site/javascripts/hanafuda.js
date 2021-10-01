@@ -44,7 +44,7 @@ $hanafuda.model = ($ => {
             month: 2, 
             name: "梅に鶯",
             pronounce: "うめ に うぐいす",
-            point: 20,
+            point: 10,
             image: "month-02.card-01.svg",
         },
         {
