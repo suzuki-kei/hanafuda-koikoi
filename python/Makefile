@@ -6,7 +6,7 @@
 
 stats:
 	@echo "# TODO"
-	@find koikoi test -type f -name '*.py' | xargs grep -F TODO | sed 's/^/    /'
+	@find * -type f -name '*.py' | xargs grep -P '# [A-Z]+ ' | sed 's/^/    /'
 	@echo "# wc"
 	@find koikoi test -type f -name '*.py' | xargs wc | sed 's/^/    /'
 
