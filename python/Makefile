@@ -1,4 +1,6 @@
 
+.DEFAULT_GOAL := \test
+
 \test:
 	PYTHONPATH=. python3 -m 'unittest' discover -v -s test
 
