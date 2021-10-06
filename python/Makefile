@@ -1,8 +1,10 @@
 
 .DEFAULT_GOAL := \test
 
+PYTHON := python3
+
 \test:
-	PYTHONPATH=. python3 -m 'unittest' discover -v -s test
+	PYTHONPATH=. ${PYTHON} -m 'unittest' discover -v -s test
 
 stats:
 	@echo "# TODO"
