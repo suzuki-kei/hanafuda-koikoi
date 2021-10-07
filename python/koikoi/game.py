@@ -170,8 +170,7 @@ class Game(object):
             親が手札から 1 枚選ぶ.
         """
         card = self._players.parent.choose_from_own_cards(self._card_stacks.parent)
-        # TODO 場札とマッチさせる.
-        #_parent_matches_to_field_cards(self._players.parent, self._card_stacks, card)
+        _decide_gained_card(self._players.parent, card, self._card_stacks.field, self._card_stacks.parent_gained)
         return self._parent_take_out_from_stocked_cards
 
     def _parent_take_out_from_stocked_cards(self) -> Action:
@@ -179,7 +178,9 @@ class Game(object):
             親が山札から 1 枚引く.
         """
         card = self._card_stacks.stocked.pop()
-        # TODO 場札とマッチさせる.
+        _decide_gained_card(self._players.parent, card, self._card_stacks.field, self._card_stacks.parent_gained)
+        # TODO 役が成立しているか判定する.
+        # TODO 勝負 or こいこい, を決める.
         return self._child_player_plays
 
     def _child_player_plays(self) -> Action:
@@ -193,7 +194,7 @@ class Game(object):
             子が手札から 1 枚選ぶ.
         """
         card = self._players.child.choose_from_own_cards(self._card_stacks.child)
-        # TODO 場札とマッチさせる.
+        _decide_gained_card(self._players.child, card, self._card_stacks.field, self._card_stacks.child_gained)
         return self._child_take_out_from_stocked_cards
 
     def _child_take_out_from_stocked_cards(self) -> Action:
@@ -201,7 +202,9 @@ class Game(object):
             子が山札から 1 枚引く.
         """
         card = self._card_stacks.stocked.pop()
-        # TODO 場札とマッチさせる.
+        _decide_gained_card(self._players.child, card, self._card_stacks.field, self._card_stacks.child_gained)
+        # TODO 役が成立しているか判定する.
+        # TODO 勝負 or こいこい, を決める.
 
         if len(self._card_stacks.child) > 0:
             return self._parent_player_plays
@@ -280,7 +283,7 @@ def _distribute_cards() -> CardStacks:
         Returns
         -------
         CardStacks
-            CardStacks.
+            CardStacks インスタンス.
     """
     # 全てのカードをシャッフルし, 山札とする.
     stocked_cards = Card.list()
@@ -306,4 +309,58 @@ def _distribute_cards() -> CardStacks:
         child=child_cards,
         child_gained=[],
     )
+
+
+def _decide_gained_card(
+        player: Player,
+        card: Card,
+        field_cards: list[Card],
+        gained_cards: list[Card]
+        ) -> None:
+    """
+        取り札を決定する.
+
+        決定内容に従い, 引数の field_card, gained_cards を変更する.
+
+        Arguments
+        ---------
+        player: Player
+            競技者.
+        card: Card
+            手札または山札から場に出された札.
+        field_cards: list[Card]
+            場札.
+        gained_cards: list[Card]
+            取り札.
+    """
+    # 場札のうち, 合い札だけを取り出す.
+    month_matches = lambda _: _.month == card.month
+    matched_cards = list(filter(month_matches, field_cards))
+
+    # 合い札ができなければ, 場に札を置いて終了する.
+    if len(matched_cards) == 0:
+        field_cards.append(card)
+        return
+
+    # 場札に合い札の候補が 1 枚だけの場合, その札を取る.
+    if len(matched_cards) == 1:
+        gained_cards.append(card)
+        gained_cards.append(matched_cards[0])
+        return
+
+    # 場札に合い札の候補が 2 枚だけの場合, 競技者が取り札を選択する.
+    if len(matched_cards) == 2:
+        choosed_card = player.choose_gained_card(card, matched_cards)
+        field_cards.remove(choosed_card)
+        gained_cards.append(card)
+        gained_cards.append(choosed_card)
+        return
+
+    # 場札に合い札の候補が 3 枚だけの場合, 全ての札を取る.
+    if len(matched_cards) == 3:
+        gained_cards.append(card)
+        gained_cards.append(matched_cards[0])
+        gained_cards.append(matched_cards[1])
+        gained_cards.append(matched_cards[2])
+        return
 

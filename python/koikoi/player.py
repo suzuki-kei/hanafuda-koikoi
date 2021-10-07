@@ -25,6 +25,24 @@ class Player(abc.ABC):
                 札.
         """
 
+    @abc.abstractmethod
+    def choose_gained_card(self, card: Card, matched_cards: list[Card]) -> Card:
+        """
+            場札から取り札を選択する.
+
+            Arguments
+            ---------
+            card: Card
+                手札または山札から場に出された札.
+            matched_cards: list[Card]
+                合い札となる場札.
+
+            Returns
+            -------
+            Card
+                matched_cards から取り札として選択した札.
+        """
+
 
 class SimplePlayer(Player):
     """
@@ -33,4 +51,7 @@ class SimplePlayer(Player):
 
     def choose_from_own_cards(self, cards: list[Card]) -> Card:
         return cards.pop()
+
+    def choose_gained_card(self, card: Card, matched_cards: list[Card]) -> Card:
+        return matched_cards[0]
 
