@@ -1,11 +1,13 @@
 
-.DEFAULT_GOAL := \test
+.DEFAULT_GOAL := test
 
 PYTHON := python3
 
-\test:
+.PHONY: test
+test:
 	PYTHONPATH=. ${PYTHON} -m 'unittest' discover -v -s test
 
+.PHONY: stats
 stats:
 	@echo "# TODO"
 	@find * -type f -name '*.py' | xargs grep -nP '# [A-Z]+ ' | sed 's/^/    /'
