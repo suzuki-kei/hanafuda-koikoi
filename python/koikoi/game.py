@@ -33,10 +33,12 @@ CardStacks = collections.namedtuple("CardStacks", (
     "stocked",
     "field",
     "parent",
+    "parent_gained",
     "child",
+    "child_gained",
 ))
 """
-    山札, 場札, 親の手札, 子の手札.
+    山札, 場札, 親の手札, 親の取り札, 子の手札, 子の取り札.
 """
 
 
@@ -89,11 +91,13 @@ class Game(object):
         def card_stacks_to_string(card_stacks):
             if card_stacks is None:
                 return "None"
-            return "(stocked={}, field={}, parent={}, child={})".format(
+            return "(stocked={}, field={}, parent={}, parent_gained={}, child={}, child_gained={})".format(
                 len(self._card_stacks.stocked),
                 len(self._card_stacks.field),
                 len(self._card_stacks.parent),
+                len(self._card_stacks.parent_gained),
                 len(self._card_stacks.child),
+                len(self._card_stacks.child_gained),
             )
 
         return "round={}, card_stacks={}, next={}".format(
@@ -298,6 +302,8 @@ def _distribute_cards() -> CardStacks:
         stocked=stocked_cards,
         field=field_cards,
         parent=parent_cards,
-        child=child_cards
+        parent_gained=[],
+        child=child_cards,
+        child_gained=[],
     )
 
