@@ -24,7 +24,6 @@ class Player(abc.ABC):
             Card
                 札.
         """
-        print("!!!")
 
 
 class SimplePlayer(Player):
