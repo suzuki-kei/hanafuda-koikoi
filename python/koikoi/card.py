@@ -1,8 +1,5 @@
 
 
-import typing
-
-
 class Card(object):
     """
         札.
@@ -12,8 +9,8 @@ class Card(object):
     def list(
             self,
             *,
-            month: typing.Optional[int] = None,
-            point: typing.Optional[int] = None
+            month: int|None = None,
+            point: int|None = None
             ) -> list["Card"]:
         """
         """
