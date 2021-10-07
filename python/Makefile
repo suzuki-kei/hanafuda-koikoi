@@ -3,6 +3,10 @@
 
 PYTHON := python3
 
+.PHONY: run
+run:
+	PYTHONPATH=. ${PYTHON} main/main.py
+
 .PHONY: test
 test:
 	PYTHONPATH=. ${PYTHON} -m 'unittest' discover -v -s test

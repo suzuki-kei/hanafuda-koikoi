@@ -63,6 +63,10 @@
 
 
 from .card import Card
+from .game import Game
+from .game import GameIsOver
 from .hand import Hand
 from .hand_judgement import HandJudgement
+from .player import Player
+from .player import SimplePlayer
 
