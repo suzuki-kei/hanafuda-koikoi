@@ -35,23 +35,38 @@ class CardStacks(object):
         山札, 場札, 親の手札, 親の取り札, 子の手札, 子の取り札.
     """
 
-    stocked: list[Card]
+    stocked: list[Card] = dataclasses.field(default_factory=Card.list, init=False)
     """山札"""
 
-    field: list[Card]
+    field: list[Card] = dataclasses.field(default_factory=list, init=False)
     """場札"""
 
-    parent: list[Card]
+    parent: list[Card] = dataclasses.field(default_factory=list, init=False)
     """親の手札"""
 
-    parent_gained: list[Card]
+    parent_gained: list[Card] = dataclasses.field(default_factory=list, init=False)
     """親の取り札"""
 
-    child: list[Card]
+    child: list[Card] = dataclasses.field(default_factory=list, init=False)
     """子の手札"""
 
-    child_gained: list[Card]
+    child_gained: list[Card] = dataclasses.field(default_factory=list, init=False)
     """子の取り札"""
+
+    def __post_init__(self) -> None:
+        """
+            山札を混ぜ, 札を配る.
+        """
+        random.shuffle(self.stocked)
+
+        # 山札から子に 2 枚, 場に 2 枚, 親に 2 枚配ることを 4 回繰り返す.
+        for i in range(4):
+            self.child.append(self.stocked.pop())
+            self.child.append(self.stocked.pop())
+            self.field.append(self.stocked.pop())
+            self.field.append(self.stocked.pop())
+            self.parent.append(self.stocked.pop())
+            self.parent.append(self.stocked.pop())
 
 
 @dataclasses.dataclass(frozen=True)
@@ -172,7 +187,7 @@ class Game(object):
         """
             札を配る.
         """
-        self._card_stacks = _distribute_cards()
+        self._card_stacks = CardStacks()
         return self._parent_player_plays
 
     def _parent_player_plays(self) -> Action:
@@ -290,41 +305,6 @@ def _decide_playing_order(player1: Player, player2: Player) -> Players:
 
         # 点数も同じ場合はやり直し.
         continue
-
-
-def _distribute_cards() -> CardStacks:
-    """
-        試合を開始するために, 札を配る.
-
-        Returns
-        -------
-        CardStacks
-            CardStacks インスタンス.
-    """
-    # 全てのカードをシャッフルし, 山札とする.
-    stocked_cards = Card.list()
-    random.shuffle(stocked_cards)
-
-    # 子の手札, 場札, 親の手札.
-    child_cards, field_cards, parent_cards = [], [], []
-
-    # 山札から子に 2 枚, 場に 2 枚, 親に 2 枚配ることを 4 回繰り返す.
-    for i in range(4):
-        child_cards.append(stocked_cards.pop(0))
-        child_cards.append(stocked_cards.pop(0))
-        field_cards.append(stocked_cards.pop(0))
-        field_cards.append(stocked_cards.pop(0))
-        parent_cards.append(stocked_cards.pop(0))
-        parent_cards.append(stocked_cards.pop(0))
-
-    return CardStacks(
-        stocked=stocked_cards,
-        field=field_cards,
-        parent=parent_cards,
-        parent_gained=[],
-        child=child_cards,
-        child_gained=[],
-    )
 
 
 def _decide_gained_card(
