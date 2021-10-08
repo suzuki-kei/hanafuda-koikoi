@@ -337,30 +337,30 @@ def _decide_gained_card(
     month_matches = lambda _: _.month == card.month
     matched_cards = list(filter(month_matches, field_cards))
 
-    # 合い札ができなければ, 場に札を置いて終了する.
-    if len(matched_cards) == 0:
-        field_cards.append(card)
-        return
+    match len(matched_cards):
+        # 合い札ができなければ, 場に札を置いて終了する.
+        case 0:
+            field_cards.append(card)
 
-    # 場札に合い札の候補が 1 枚だけの場合, その札を取る.
-    if len(matched_cards) == 1:
-        gained_cards.append(card)
-        gained_cards.append(matched_cards[0])
-        return
+        # 場札に合い札の候補が 1 枚だけの場合, その札を取る.
+        case 1:
+            gained_cards.append(card)
+            gained_cards.append(matched_cards[0])
 
-    # 場札に合い札の候補が 2 枚だけの場合, 競技者が取り札を選択する.
-    if len(matched_cards) == 2:
-        choosed_card = player.choose_gained_card(card, matched_cards)
-        field_cards.remove(choosed_card)
-        gained_cards.append(card)
-        gained_cards.append(choosed_card)
-        return
+        # 場札に合い札の候補が 2 枚だけの場合, 競技者が取り札を選択する.
+        case 2:
+            choosed_card = player.choose_gained_card(card, matched_cards)
+            field_cards.remove(choosed_card)
+            gained_cards.append(card)
+            gained_cards.append(choosed_card)
 
-    # 場札に合い札の候補が 3 枚だけの場合, 全ての札を取る.
-    if len(matched_cards) == 3:
-        gained_cards.append(card)
-        gained_cards.append(matched_cards[0])
-        gained_cards.append(matched_cards[1])
-        gained_cards.append(matched_cards[2])
-        return
+        # 場札に合い札の候補が 3 枚だけの場合, 全ての札を取る.
+        case 3:
+            gained_cards.append(card)
+            gained_cards.append(matched_cards[0])
+            gained_cards.append(matched_cards[1])
+            gained_cards.append(matched_cards[2])
+
+        case _:
+            raise Exception("The bug.")
 
