@@ -5,30 +5,6 @@ import random
 import typing
 
 
-StockedCards = list[Card]
-"""
-    山札.
-"""
-
-
-FieldCards = list[Card]
-"""
-    場札.
-"""
-
-
-ParentCards = list[Card]
-"""
-    親の手札.
-"""
-
-
-ChildCards = list[Card]
-"""
-    子の手札.
-"""
-
-
 @dataclasses.dataclass(frozen=True)
 class CardStacks(object):
     """
