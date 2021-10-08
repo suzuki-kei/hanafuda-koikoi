@@ -1,6 +1,6 @@
 from .card import Card
 from .player import Player
-import collections
+import dataclasses
 import random
 import typing
 
@@ -29,26 +29,42 @@ ChildCards = list[Card]
 """
 
 
-CardStacks = collections.namedtuple("CardStacks", (
-    "stocked",
-    "field",
-    "parent",
-    "parent_gained",
-    "child",
-    "child_gained",
-))
-"""
-    山札, 場札, 親の手札, 親の取り札, 子の手札, 子の取り札.
-"""
+@dataclasses.dataclass(frozen=True)
+class CardStacks(object):
+    """
+        山札, 場札, 親の手札, 親の取り札, 子の手札, 子の取り札.
+    """
+
+    stocked: list[Card]
+    """山札"""
+
+    field: list[Card]
+    """場札"""
+
+    parent: list[Card]
+    """親の手札"""
+
+    parent_gained: list[Card]
+    """親の取り札"""
+
+    child: list[Card]
+    """子の手札"""
+
+    child_gained: list[Card]
+    """子の取り札"""
 
 
-Players = collections.namedtuple("Players", (
-    "parent",
-    "child",
-))
-"""
-    親プレイヤーと子プレイヤー.
-"""
+@dataclasses.dataclass(frozen=True)
+class Players(object):
+    """
+        親プレイヤーと子プレイヤー.
+    """
+
+    parent: Player
+    """親プレイヤー"""
+
+    child: Player
+    """子プレイヤー"""
 
 
 Action = typing.Callable[["Game"], typing.Callable]
