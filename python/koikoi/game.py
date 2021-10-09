@@ -2,22 +2,9 @@ from .card import Card
 from .card_stacks import CardStacks
 from .hand_judgement import HandJudgement
 from .player import Player
-import dataclasses
+from .players import Players
 import random
 import typing
-
-
-@dataclasses.dataclass(frozen=True)
-class Players(object):
-    """
-        親と子.
-    """
-
-    parent: Player
-    """親"""
-
-    child: Player
-    """子"""
 
 
 class GameIsOver(Exception):
