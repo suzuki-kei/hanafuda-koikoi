@@ -313,18 +313,28 @@ def _decides_whether_to_continue_the_round(
     """
     hands = hand_judgement.judge(gained_cards)
 
-    if len(hands) == 0:
-        return False
+    match (bool(players_cards), bool(hands)):
+        # {手札=あり, 手役=あり} の場合は, 競技者が "こいこい" するか決める.
+        case (True, True):
+            if player.is_koikoi():
+                return True
+            else:
+                # TODO 得点計算.
+                return False
 
-    # 手札が無ければ, 無条件に上がりとなる.
-    if len(players_cards) == 0:
-        print(sum(map(lambda _: _.point, hands)), hands) # TODO 後で消す
-        return False
+        # {手札=あり, 手役=なし} の場合は試合を継続する.
+        case (True, False):
+            return True
 
-    # 手札が残っている場合は, 競技者が "こいこい" するか決める.
-    if player.is_koikoi():
-        return True
-    else:
-        print(sum(map(lambda _: _.point, hands)), hands) # TODO 後で消す
-        return False
+        # {手札=なし, 手役=あり} の場合は試合を終了する.
+        case (False, True):
+            # TODO 得点計算.
+            return False
+
+        # {手札=なし, 手役=なし} の場合は試合を終了する.
+        case (False, False):
+            return False
+
+        case _:
+            raise Exception("The bug.")
 
