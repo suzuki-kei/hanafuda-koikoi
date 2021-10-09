@@ -1,4 +1,5 @@
 from .card import Card
+from .hand_judgement import HandJudgement
 from .player import Player
 import dataclasses
 import random
@@ -79,7 +80,8 @@ class Game(object):
     def __init__(
             self,
             player1: Player,
-            player2: Player
+            player2: Player,
+            hand_judgement: HandJudgement
             ) -> None:
         """
             インスタンスを初期化する.
@@ -90,9 +92,12 @@ class Game(object):
                 競技者.
             player2: Player
                 競技者.
+            hand_judgement: HandJudgement
+                役判定.
         """
         self._player1 = player1
         self._player2 = player2
+        self._hand_judgement = hand_judgement
         self._next = self._start_game
 
     def __str__(self) -> str:
