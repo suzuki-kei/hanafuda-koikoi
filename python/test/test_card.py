@@ -38,14 +38,14 @@ class CardInitTestCase(unittest.TestCase):
 
 class CardCardsInitTestCase(unittest.TestCase):
     """
-        Card.cards のテストケース.
+        Card._cards のテストケース.
     """
 
     def test_there_are_48_cards_in_total(self):
         """
             全体で 48 枚の札が存在する.
         """
-        self.assertEqual(48, len(Card.cards))
+        self.assertEqual(48, len(Card._cards))
 
     def test_there_are_4_cards_for_each_month(self):
         """
@@ -53,35 +53,35 @@ class CardCardsInitTestCase(unittest.TestCase):
         """
         for month in range(1, 13):
             with self.subTest(month=month):
-                cards = [card for card in Card.cards if card.month == month]
+                cards = [card for card in Card._cards if card.month == month]
                 self.assertEqual(4, len(cards))
 
     def test_there_are_5_hikari_cards(self):
         """
             光札は 5 枚存在する.
         """
-        cards = [card for card in Card.cards if card.is_hikari]
+        cards = [card for card in Card._cards if card.is_hikari]
         self.assertEqual(5, len(cards))
 
     def test_there_are_9_tane_cards(self):
         """
             タネ札は 9 枚存在する.
         """
-        cards = [card for card in Card.cards if card.is_tane]
+        cards = [card for card in Card._cards if card.is_tane]
         self.assertEqual(9, len(cards))
 
     def test_there_are_10_tan_cards(self):
         """
             タン札は 10 枚存在する.
         """
-        cards = [card for card in Card.cards if card.is_tan]
+        cards = [card for card in Card._cards if card.is_tan]
         self.assertEqual(10, len(cards))
 
     def test_there_are_24_kasu_cards(self):
         """
             カス札は 24 枚存在する.
         """
-        cards = [card for card in Card.cards if card.is_kasu]
+        cards = [card for card in Card._cards if card.is_kasu]
         self.assertEqual(24, len(cards))
 
 

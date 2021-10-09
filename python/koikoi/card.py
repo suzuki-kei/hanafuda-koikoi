@@ -30,11 +30,11 @@ class Card(object):
         is_match = lambda card: \
             (month is None or card.month == month) and \
             (point is None or card.point == point)
-        return list(filter(is_match, self.cards))
+        return list(filter(is_match, self._cards))
 
     @classmethod
     def init(self) -> None:
-        self.cards = (
+        self._cards = (
             Card( 1, 20, "松に鶴",       "まつ に つる"),
             Card( 1,  5, "松に赤短",     "まつ に あかたん"),
             Card( 1,  1, "松のカス",     "まつ の かす"),
