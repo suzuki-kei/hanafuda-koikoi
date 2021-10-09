@@ -3,6 +3,13 @@
 
 PYTHON := python3
 
+.PHONY: clean
+clean:
+	@echo 'Check the files/directories to delete:'
+	@git clean -n -xdf | sed 's/^/    /'
+	@echo 'Run following command:'
+	@echo '    git clean -xdf'
+
 .PHONY: run
 run:
 	PYTHONPATH=. ${PYTHON} main/main.py
