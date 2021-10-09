@@ -1,5 +1,3 @@
-
-
 from .card import Card
 import abc
 

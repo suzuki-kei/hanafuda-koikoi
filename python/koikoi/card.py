@@ -1,5 +1,3 @@
-
-
 class Card(object):
     """
         札.

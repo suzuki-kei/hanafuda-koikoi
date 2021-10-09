@@ -1,5 +1,3 @@
-
-
 class Hand(object):
     """
         役.
