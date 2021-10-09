@@ -58,12 +58,6 @@ class Players(object):
     """子プレイヤー"""
 
 
-Action = typing.Callable[["Game"], typing.Callable]
-"""
-    競技の状態を進める Game クラスのインスタンスメソッド.
-"""
-
-
 class GameIsOver(Exception):
     """
         競技が終了していることを表す例外.
@@ -73,6 +67,13 @@ class GameIsOver(Exception):
 class Game(object):
     """
         ゲーム.
+    """
+
+    _Action = typing.Callable[["Game"], typing.Callable]
+    """
+        競技を 1 ステップ進行するプライベートメソッド.
+        競技を 1 ステップ進行してから, 次の _Action を返す.
+        self._next に設定しておき, next() メソッドで使用される.
     """
 
     def __init__(
@@ -125,27 +126,27 @@ class Game(object):
         """
         self._next = self._next()
 
-    def _start_game(self) -> Action:
+    def _start_game(self) -> _Action:
         """
             競技を開始する.
         """
         return self._decide_playing_order
 
-    def _decide_playing_order(self) -> Action:
+    def _decide_playing_order(self) -> _Action:
         """
             競技の順番 (親と子) を決める.
         """
         self._players = _decide_playing_order(self._player1, self._player2)
         return self._initialize_round_counter
 
-    def _initialize_round_counter(self) -> Action:
+    def _initialize_round_counter(self) -> _Action:
         """
             試合のカウントを初期化する.
         """
         self._round = 1
         return self._initialize_points
 
-    def _initialize_points(self) -> Action:
+    def _initialize_points(self) -> _Action:
         """
             親と子の得点を初期化する.
         """
@@ -153,20 +154,20 @@ class Game(object):
         self._child_point = 0
         return self._start_round
 
-    def _start_round(self) -> Action:
+    def _start_round(self) -> _Action:
         """
             試合を開始する.
         """
         return self._distribute_cards
 
-    def _distribute_cards(self) -> Action:
+    def _distribute_cards(self) -> _Action:
         """
             札を配る.
         """
         self._card_stacks = CardStacks()
         return self._parent_player_plays
 
-    def _parent_player_plays(self) -> Action:
+    def _parent_player_plays(self) -> _Action:
         """
             親が行動する.
         """
@@ -180,7 +181,7 @@ class Game(object):
         _decide_gained_card(self._players.parent, card, self._card_stacks.field, self._card_stacks.parent_gained)
         return self._parent_take_out_from_stocked_cards
 
-    def _parent_take_out_from_stocked_cards(self) -> Action:
+    def _parent_take_out_from_stocked_cards(self) -> _Action:
         """
             親が山札から 1 枚引く.
         """
@@ -190,7 +191,7 @@ class Game(object):
         # TODO 勝負 or こいこい, を決める.
         return self._child_player_plays
 
-    def _child_player_plays(self) -> Action:
+    def _child_player_plays(self) -> _Action:
         """
             子が行動する.
         """
@@ -204,7 +205,7 @@ class Game(object):
         _decide_gained_card(self._players.child, card, self._card_stacks.field, self._card_stacks.child_gained)
         return self._child_take_out_from_stocked_cards
 
-    def _child_take_out_from_stocked_cards(self) -> Action:
+    def _child_take_out_from_stocked_cards(self) -> _Action:
         """
             子が山札から 1 枚引く.
         """
@@ -218,7 +219,7 @@ class Game(object):
         else:
             return self._finish_round
 
-    def _finish_round(self) -> Action:
+    def _finish_round(self) -> _Action:
         """
             試合を終了する.
         """
@@ -228,7 +229,7 @@ class Game(object):
         else:
             return self._finish_game
 
-    def _finish_game(self) -> Action:
+    def _finish_game(self) -> _Action:
         """
             競技を終了する.
         """
