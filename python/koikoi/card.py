@@ -11,6 +11,21 @@ class Card(object):
             point: int|None = None
             ) -> list["Card"]:
         """
+            条件に該当する札を取得する.
+
+            Arguments
+            ---------
+            month: int|None = None
+                指定した月の札を取得する.
+                None の場合は全ての月の札を取得する.
+            point: int|None = None
+                指定した点の札を取得する.
+                None の場合は全ての点の札を取得する.
+
+            Returns
+            -------
+            list["Card"]
+                条件に該当する札.
         """
         is_match = lambda card: \
             (month is None or card.month == month) and \
