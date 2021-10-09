@@ -6,7 +6,7 @@ import abc
 
 class Player(abc.ABC):
     """
-        プレイヤー.
+        競技者.
     """
 
     @abc.abstractmethod
@@ -46,7 +46,7 @@ class Player(abc.ABC):
 
 class SimplePlayer(Player):
     """
-        単純な戦略のプレイヤー.
+        単純な戦略の競技者.
     """
 
     def choose_from_own_cards(self, cards: list[Card]) -> Card:

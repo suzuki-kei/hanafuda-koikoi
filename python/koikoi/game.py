@@ -48,14 +48,14 @@ class CardStacks(object):
 @dataclasses.dataclass(frozen=True)
 class Players(object):
     """
-        親プレイヤーと子プレイヤー.
+        親と子.
     """
 
     parent: Player
-    """親プレイヤー"""
+    """親"""
 
     child: Player
-    """子プレイヤー"""
+    """子"""
 
 
 class GameIsOver(Exception):
@@ -66,7 +66,7 @@ class GameIsOver(Exception):
 
 class Game(object):
     """
-        ゲーム.
+        競技.
     """
 
     _Action = typing.Callable[["Game"], typing.Callable]
@@ -87,9 +87,9 @@ class Game(object):
             Arguments
             ---------
             player1: Player
-                プレイヤー.
+                競技者.
             player2: Player
-                プレイヤー.
+                競技者.
         """
         self._player1 = player1
         self._player2 = player2
@@ -250,17 +250,17 @@ def _decide_playing_order(player1: Player, player2: Player) -> Players:
         Arguments
         ---------
         player1: Player
-            プレイヤー.
+            競技者.
         player2: Player
-            プレイヤー.
+            競技者.
 
         Returns
         -------
         Players
-            親プレイヤーと子プレヤー.
+            親と子.
     """
     while True:
-        # 札をシャッフルする.
+        # 札を混ぜる.
         cards = Card.list()
         random.shuffle(cards)
 
