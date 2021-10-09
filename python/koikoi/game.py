@@ -241,9 +241,14 @@ class Game(object):
         self._round = None
         return self._game_is_over
 
-    def _game_is_over(self):
+    def _game_is_over(self) -> typing.NoReturn:
         """
             競技は終了している.
+
+            Raises
+            ------
+            GameIsOver
+                常に GameIsOver を raise する.
         """
         raise GameIsOver()
 
