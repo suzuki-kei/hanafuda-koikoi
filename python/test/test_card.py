@@ -7,6 +7,42 @@ from koikoi import Card
 import unittest
 
 
+class CardListTestCase(unittest.TestCase):
+    """
+        Card.list() のテストケース.
+    """
+
+    def test_list_all_cards(self):
+        """
+            条件を指定せずに, 全ての札を取得する.
+        """
+        cards = Card.list()
+        self.assertEqual(48, len(cards))
+
+    def test_list_cards_for_specific_month(self):
+        """
+            特定の月の札だけ取得する.
+        """
+        cards = Card.list(month=1)
+        self.assertEqual(4, len(cards))
+        self.assertEqual(1, cards[0].month)
+        self.assertEqual(1, cards[1].month)
+        self.assertEqual(1, cards[2].month)
+        self.assertEqual(1, cards[3].month)
+
+    def test_list_cards_for_specific_point(self):
+        """
+            特定の点の札だけ取得する.
+        """
+        cards = Card.list(point=20)
+        self.assertEqual(5, len(cards))
+        self.assertEqual(20, cards[0].point)
+        self.assertEqual(20, cards[1].point)
+        self.assertEqual(20, cards[2].point)
+        self.assertEqual(20, cards[3].point)
+        self.assertEqual(20, cards[4].point)
+
+
 class CardInitTestCase(unittest.TestCase):
     """
         Card.__init__() のテストケース.
