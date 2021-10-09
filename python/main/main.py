@@ -1,5 +1,3 @@
-
-
 from koikoi import Game
 from koikoi import SimplePlayer
 
