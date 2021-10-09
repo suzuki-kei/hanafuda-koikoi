@@ -63,6 +63,7 @@
 
 
 from .card import Card
+from .card_stacks import CardStacks
 from .game import Game
 from .game import GameIsOver
 from .hand import Hand
