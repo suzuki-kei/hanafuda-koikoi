@@ -1,16 +1,11 @@
 from .card import Card
 from .card_stacks import CardStacks
+from .game_is_over import GameIsOver
 from .hand_judgement import HandJudgement
 from .player import Player
 from .players import Players
 import random
 import typing
-
-
-class GameIsOver(Exception):
-    """
-        競技が終了していることを表す例外.
-    """
 
 
 class Game(object):
