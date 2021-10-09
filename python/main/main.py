@@ -1,6 +1,6 @@
 from koikoi import Game
-from koikoi import SimplePlayer
 from koikoi import HandJudgement
+from koikoi import SimplePlayer
 
 
 def main():

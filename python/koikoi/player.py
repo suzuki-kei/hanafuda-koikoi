@@ -41,6 +41,18 @@ class Player(abc.ABC):
                 matched_cards から取り札として選択した札.
         """
 
+    @abc.abstractmethod
+    def is_koikoi(self) -> bool:
+        """
+            "こいこい" するか決める.
+
+            Returns
+            -------
+            bool
+                True の場合は, "こいこい" して試合を続行する.
+                False の場合は, 上がりを宣言して試合を終了する.
+        """
+
 
 class SimplePlayer(Player):
     """
@@ -52,4 +64,7 @@ class SimplePlayer(Player):
 
     def choose_gained_card(self, card: Card, matched_cards: list[Card]) -> Card:
         return matched_cards[0]
+
+    def is_koikoi(self) -> bool:
+        return False
 

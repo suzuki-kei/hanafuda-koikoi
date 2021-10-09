@@ -135,9 +135,15 @@ class Game(object):
         """
         card = self._card_stacks.stocked.pop()
         _decide_gained_card(self._players.parent, card, self._card_stacks.field, self._card_stacks.parent_gained)
-        # TODO 役が成立しているか判定する.
-        # TODO 勝負 or こいこい, を決める.
-        return self._child_player_plays
+
+        if _decides_whether_to_continue_the_round(
+                self._hand_judgement,
+                self._players.parent,
+                self._card_stacks.parent,
+                self._card_stacks.parent_gained):
+            return self._finish_round
+        else:
+            return self._child_player_plays
 
     def _child_player_plays(self) -> _Action:
         """
@@ -159,13 +165,18 @@ class Game(object):
         """
         card = self._card_stacks.stocked.pop()
         _decide_gained_card(self._players.child, card, self._card_stacks.field, self._card_stacks.child_gained)
-        # TODO 役が成立しているか判定する.
-        # TODO 勝負 or こいこい, を決める.
 
-        if len(self._card_stacks.child) > 0:
-            return self._parent_player_plays
-        else:
+        if len(self._card_stacks.child) == 0:
             return self._finish_round
+
+        if _decides_whether_to_continue_the_round(
+                self._hand_judgement,
+                self._players.child,
+                self._card_stacks.child,
+                self._card_stacks.child_gained):
+            return self._finish_round
+        else:
+            return self._parent_player_plays
 
     def _finish_round(self) -> _Action:
         """
@@ -289,4 +300,31 @@ def _decide_gained_card(
 
         case _:
             raise Exception("The bug.")
+
+
+def _decides_whether_to_continue_the_round(
+        hand_judgement: HandJudgement,
+        player: Player,
+        players_cards: list[Card],
+        gained_cards: list[Card]
+        ) -> bool:
+    """
+        試合を継続するか決定する.
+    """
+    hands = hand_judgement.judge(gained_cards)
+
+    if len(hands) == 0:
+        return False
+
+    # 手札が無ければ, 無条件に上がりとなる.
+    if len(players_cards) == 0:
+        print(sum(map(lambda _: _.point, hands)), hands) # TODO 後で消す
+        return False
+
+    # 手札が残っている場合は, 競技者が "こいこい" するか決める.
+    if player.is_koikoi():
+        return True
+    else:
+        print(sum(map(lambda _: _.point, hands)), hands) # TODO 後で消す
+        return False
 
