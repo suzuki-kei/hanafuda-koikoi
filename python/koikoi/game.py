@@ -1,6 +1,6 @@
 from .card import Card
 from .card_stacks import CardStacks
-from .game_is_over import GameIsOver
+from .exceptions import GameIsOver
 from .hand_judgement import HandJudgement
 from .player import Player
 from .players import Players

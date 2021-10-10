@@ -67,8 +67,8 @@
 
 from .card import Card
 from .card_stacks import CardStacks
+from .exceptions import GameIsOver
 from .game import Game
-from .game_is_over import GameIsOver
 from .hand import Hand
 from .hand_judgement import HandJudgement
 from .player import Player
