@@ -4,6 +4,7 @@ from .game_is_over import GameIsOver
 from .hand_judgement import HandJudgement
 from .player import Player
 from .players import Players
+from .round_continuity import RoundContinuity
 import random
 import typing
 
@@ -136,14 +137,24 @@ class Game(object):
         card = self._card_stacks.stocked.pop()
         _decide_gained_card(self._players.parent, card, self._card_stacks.field, self._card_stacks.parent_gained)
 
-        if _decides_whether_to_continue_the_round(
+        match _decide_round_continuity(
                 self._hand_judgement,
                 self._players.parent,
                 self._card_stacks.parent,
                 self._card_stacks.parent_gained):
-            return self._finish_round
-        else:
-            return self._child_player_plays
+            case RoundContinuity.END:
+                return self._child_player_plays
+            case RoundContinuity.CONTINUE:
+                return self._parent_get_point
+            case _:
+                raise Exception("The bug.")
+
+    def _parent_get_point(self) -> _Action:
+        """
+            親が得点する.
+        """
+        # TODO 得点計算.
+        return self._finish_round
 
     def _child_player_plays(self) -> _Action:
         """
@@ -169,14 +180,24 @@ class Game(object):
         if len(self._card_stacks.child) == 0:
             return self._finish_round
 
-        if _decides_whether_to_continue_the_round(
+        match _decide_round_continuity(
                 self._hand_judgement,
                 self._players.child,
                 self._card_stacks.child,
                 self._card_stacks.child_gained):
-            return self._finish_round
-        else:
-            return self._parent_player_plays
+            case RoundContinuity.END:
+                return self._child_player_plays
+            case RoundContinuity.CONTINUE:
+                return self._child_get_point
+            case _:
+                raise Exception("The bug.")
+
+    def _child_get_point(self) -> _Action:
+        """
+            子が得点する.
+        """
+        # TODO 得点計算.
+        return self._finish_round
 
     def _finish_round(self) -> _Action:
         """
@@ -302,12 +323,12 @@ def _decide_gained_card(
             raise Exception("The bug.")
 
 
-def _decides_whether_to_continue_the_round(
+def _decide_round_continuity(
         hand_judgement: HandJudgement,
         player: Player,
         players_cards: list[Card],
         gained_cards: list[Card]
-        ) -> bool:
+        ) -> RoundContinuity:
     """
         試合を継続するか決定する.
     """
@@ -317,23 +338,21 @@ def _decides_whether_to_continue_the_round(
         # {手札=あり, 手役=あり} の場合は, 競技者が "こいこい" するか決める.
         case (True, True):
             if player.is_koikoi():
-                return True
+                return RoundContinuity.CONTINUE
             else:
-                # TODO 得点計算.
-                return False
+                return RoundContinuity.END
 
         # {手札=あり, 手役=なし} の場合は試合を継続する.
         case (True, False):
-            return True
+            return RoundContinuity.CONTINUE
 
         # {手札=なし, 手役=あり} の場合は試合を終了する.
         case (False, True):
-            # TODO 得点計算.
-            return False
+            return RoundContinuity.END
 
         # {手札=なし, 手役=なし} の場合は試合を終了する.
         case (False, False):
-            return False
+            return RoundContinuity.END
 
         case _:
             raise Exception("The bug.")
