@@ -31,15 +31,48 @@ class CardStacks(object):
         """
             山札を混ぜ, 札を配る.
         """
-        random.shuffle(self.stocked)
+        while True:
+            # 山札を混ぜる.
+            random.shuffle(self.stocked)
 
-        # 山札から子に 2 枚, 場に 2 枚, 親に 2 枚配ることを 4 回繰り返す.
-        # TODO 場札に同じ月の札が 4 枚出た場合は配り直す.
-        for i in range(4):
-            self.child.append(self.stocked.pop())
-            self.child.append(self.stocked.pop())
-            self.field.append(self.stocked.pop())
-            self.field.append(self.stocked.pop())
-            self.parent.append(self.stocked.pop())
-            self.parent.append(self.stocked.pop())
+            # 山札から子に 2 枚, 場に 2 枚, 親に 2 枚配ることを 4 回繰り返す.
+            for i in range(4):
+                self.child.append(self.stocked.pop())
+                self.child.append(self.stocked.pop())
+                self.field.append(self.stocked.pop())
+                self.field.append(self.stocked.pop())
+                self.parent.append(self.stocked.pop())
+                self.parent.append(self.stocked.pop())
+
+            # 場札に同じ月の札が 4 枚出た場合は配り直す.
+            if self._contains_four_cards_of_same_month(self.field):
+                continue
+
+            break
+
+    def _contains_four_cards_of_same_month(
+            self,
+            field_cards: list[Card]
+            ) -> bool:
+        """
+            同じ月の札が 4 枚あることを判定する.
+
+            Arguments
+            ---------
+            field_cards: list[Card]
+                場札.
+
+            Returns
+            -------
+            bool
+                True の場合, field_cards に同じ月の札が 4 枚含まれる.
+        """
+        # counts[N] に N 月の札の枚数を保持する.
+        counts = [0] * 13
+
+        for card in field_cards:
+            counts[card.month] += 1
+            if counts[card.month] == 4:
+                return True
+        return False
 
