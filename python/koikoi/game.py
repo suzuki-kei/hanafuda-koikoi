@@ -1,6 +1,7 @@
 from .card import Card
 from .card_stacks import CardStacks
 from .exceptions import GameIsOver
+from .exceptions import LogicError
 from .hand_judgement import HandJudgement
 from .player import Player
 from .players import Players
@@ -149,7 +150,7 @@ class Game(object):
             case RoundContinuity.CONTINUE:
                 return self._parent_get_point
             case _:
-                raise Exception("The bug.")
+                raise LogicError()
 
     def _parent_get_point(self) -> _Action:
         """
@@ -192,7 +193,7 @@ class Game(object):
             case RoundContinuity.CONTINUE:
                 return self._child_get_point
             case _:
-                raise Exception("The bug.")
+                raise LogicError()
 
     def _child_get_point(self) -> _Action:
         """
@@ -322,7 +323,7 @@ def _decide_gained_card(
             gained_cards.append(matched_cards[2])
 
         case _:
-            raise Exception("The bug.")
+            raise LogicError()
 
 
 def _decide_round_continuity(
@@ -357,5 +358,5 @@ def _decide_round_continuity(
             return RoundContinuity.END
 
         case _:
-            raise Exception("The bug.")
+            raise LogicError()
 
