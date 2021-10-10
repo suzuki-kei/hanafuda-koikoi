@@ -73,6 +73,8 @@ class Game(object):
         """
             競技を進行する.
         """
+        # TODO 手四 (てし) に対応する.
+        # TODO くっつきに対応する.
         self._next = self._next()
 
     def _start_game(self) -> _Action:

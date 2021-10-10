@@ -34,6 +34,7 @@ class CardStacks(object):
         random.shuffle(self.stocked)
 
         # 山札から子に 2 枚, 場に 2 枚, 親に 2 枚配ることを 4 回繰り返す.
+        # TODO 場札に同じ月の札が 4 枚出た場合は配り直す.
         for i in range(4):
             self.child.append(self.stocked.pop())
             self.child.append(self.stocked.pop())
